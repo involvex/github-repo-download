@@ -1,0 +1,20 @@
+{
+	"version": 1,
+	"skills": {
+		"Cli-Expert": {
+			"source": "involvex/skills",
+			"sourceType": "github",
+			"computedHash": "1abf98cb1db8a782b23c71da81b1a5df894fac997e41638e09bdf900be77c729"
+		},
+		"bun-development": {
+			"source": "involvex/skills",
+			"sourceType": "github",
+			"computedHash": "a1b524e584602d68a3c91eb0ff781217a8ba0a2235726a64696cae46bbe0c2d5"
+		},
+		"cli-mastery": {
+			"source": "involvex/skills",
+			"sourceType": "github",
+			"computedHash": "b5fae2a096d0305fffaa75a3b8950e8f3f3ef8f67159547ecee52dc4e11899d6"
+		}
+	}
+}

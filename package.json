@@ -1,0 +1,47 @@
+{
+	"name": "@involvex/github-repo-download",
+	"version": "0.0.1",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/involvex/github-repo-download"
+	},
+	"funding": {
+		"url": "https://github.com/sponsors/involvex"
+	},
+	"author": "involvex",
+	"type": "module",
+	"module": "src/index.ts",
+	"bin": {
+		"github-repo-download": "dist/index.js"
+	},
+	"scripts": {
+		"prebuild": "bun run format && bun run lint:fix && bun run typecheck",
+		"build": "bun build src/index.ts --outdir dist --target bun",
+		"dev": "bun run src/index.ts",
+		"format": "prettier . --write",
+		"lint": "eslint src",
+		"lint:fix": "eslint src --fix",
+		"start": "bun run dist/index.js",
+		"typecheck": "tsc --noEmit"
+	},
+	"prettier": "@involvex/prettier-config",
+	"dependencies": {
+		"bun": "^1.3.11",
+		"jiti": "^2.6.1"
+	},
+	"devDependencies": {
+		"@eslint/js": "^10.0.1",
+		"@involvex/prettier-config": "^0.0.4",
+		"@types/bun": "^1.3.11",
+		"eslint": "^10.1.0",
+		"globals": "^17.4.0",
+		"prettier": "^3.8.1",
+		"typescript-eslint": "^8.57.2"
+	},
+	"peerDependencies": {
+		"typescript": "5.9.3"
+	},
+	"sponsor": {
+		"url": "https://github.com/sponsors/involvex"
+	}
+}
