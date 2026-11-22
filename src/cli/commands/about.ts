@@ -1,5 +1,5 @@
-import pkg from '../../../package.json' with {type: 'json'}
 import bun from 'bun'
+import pkg from '../../../package.json' with {type: 'json'}
 export default function showAbout() {
 	bun.stdout.write(`
 involvex-formatter v${pkg.version}

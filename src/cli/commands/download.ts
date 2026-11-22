@@ -1,5 +1,5 @@
-import {download} from '../../github/download'
 import {parseArgs} from 'util'
+import {download} from '../../github/download'
 
 interface DownloadFlags {
 	help: boolean

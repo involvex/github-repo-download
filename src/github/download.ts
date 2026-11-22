@@ -1,14 +1,14 @@
-import {
-	getRepository,
-	getContents,
-	getTree,
-	downloadFile,
-	type GitHubTreeItem,
-} from './client'
-import {parseSource, getDisplayName} from './parser'
+import {existsSync} from 'node:fs'
 import {mkdir, writeFile} from 'node:fs/promises'
 import {resolve, sep} from 'node:path'
-import {existsSync} from 'node:fs'
+import {
+	downloadFile,
+	getContents,
+	getRepository,
+	getTree,
+	type GitHubTreeItem,
+} from './client'
+import {getDisplayName, parseSource} from './parser'
 
 export interface DownloadOptions {
 	output?: string
