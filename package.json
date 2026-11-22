@@ -22,6 +22,7 @@
 		"lint": "eslint src",
 		"lint:fix": "eslint src --fix",
 		"start": "bun run dist/index.js",
+		"test": "bun test",
 		"typecheck": "tsc --noEmit"
 	},
 	"prettier": "@involvex/prettier-config",

@@ -6,6 +6,7 @@ import {
 	getContents,
 	getRepository,
 	getTree,
+	type GitHubContent,
 	type GitHubTreeItem,
 } from './client'
 import {getDisplayName, parseSource} from './parser'
@@ -58,20 +59,15 @@ async function downloadPath(
 		return
 	}
 
-	// It's a directory - need to strip the requested path prefix
+	// It's a directory. Keep the full repo-relative paths for API calls during
+	// recursion, and strip the requested prefix only when writing to disk.
 	const items = Array.isArray(contents) ? contents : []
 	const prefix = path + '/'
-	const normalizedItems = items.map(item => ({
-		...item,
-		path: item.path.replace(new RegExp('^' + prefix), ''),
-	}))
-	await downloadDirectoryContents(
-		owner,
-		repo,
-		branch,
-		normalizedItems,
-		outputDir,
-	)
+	await downloadDirectoryContents(owner, repo, branch, items, outputDir, prefix)
+}
+
+function stripPrefix(itemPath: string, prefix: string): string {
+	return itemPath.startsWith(prefix) ? itemPath.slice(prefix.length) : itemPath
 }
 
 async function downloadSingleFile(downloadUrl: string, destPath: string) {
@@ -90,21 +86,32 @@ async function downloadDirectoryContents(
 	owner: string,
 	repo: string,
 	branch: string,
-	items: {
-		name: string
-		path: string
-		type: string
-		download_url: string | null
-	}[],
+	items: GitHubContent[],
 	outputDir: string,
+	prefix: string,
 ) {
 	for (const item of items) {
-		const itemPath = resolve(outputDir, item.path)
+		const relativePath = stripPrefix(item.path, prefix)
+		const itemPath = resolve(outputDir, relativePath)
 
 		if (item.type === 'dir') {
 			await mkdir(itemPath, {recursive: true})
+
+			// The contents API only returns immediate children, so recurse to
+			// populate nested directories instead of leaving them empty.
+			const children = await getContents(owner, repo, item.path, branch)
+			if (Array.isArray(children)) {
+				await downloadDirectoryContents(
+					owner,
+					repo,
+					branch,
+					children,
+					outputDir,
+					prefix,
+				)
+			}
 		} else if (item.download_url) {
-			console.log(`Downloading: ${item.path}`)
+			console.log(`Downloading: ${relativePath}`)
 			const data = await downloadFile(item.download_url)
 
 			const dir = itemPath.substring(0, itemPath.lastIndexOf(sep))
